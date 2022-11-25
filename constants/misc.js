@@ -1,1 +1,1 @@
-export const holonymApiUrl = 'http://localhost:3010'
+export const holonymApiUrl = 'https://api.holonym.io'
