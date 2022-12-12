@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { MoonLoader } from 'react-spinners';
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css';
 import { Card, Text, Metric, AreaChart, ColGrid, Title } from "@tremor/react";
 import { holonymApiUrl } from '../constants/misc';
 import TimeseriesAreaChart from '../components/TimeseriesAreaChart'
@@ -42,7 +42,7 @@ export default function Home() {
   const leavesQuery = useQuery({
     queryKey: ['leavesTimeseries'],
     queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries`);
+      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism-goerli`);
       const data = await resp.json();
       if (data?.result) {
         return data.result.map((item: SCEventWithTotal) => ({
@@ -55,7 +55,7 @@ export default function Home() {
   const uniquenessQuery = useQuery({
     queryKey: ['uniquenessTimeseries'],
     queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries`)
+      const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries/optimism-goerli`)
       const data = await resp.json();
       if (data?.result) {
         return data.result.map((item: SCEventWithTotal) => ({
@@ -68,7 +68,7 @@ export default function Home() {
   const usResidencyQuery = useQuery({
     queryKey: ['usResidencyTimeseries'],
     queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/us-residency-count/timeseries`)
+      const resp = await fetch(`${holonymApiUrl}/metrics/us-residency-count/timeseries/optimism-goerli`)
       const data = await resp.json();
       if (data?.result) {
         return data.result.map((item: SCEventWithTotal) => ({
@@ -94,20 +94,20 @@ export default function Home() {
         </h1>
 
         <TimeseriesAreaChart 
-          title="Total number of leaves"
-          total={leavesQuery?.data ? leavesQuery.data[leavesQuery.data.length - 1].total : 0}
+          title="Total number of leaves (Optimism goerli)"
+          total={leavesQuery?.data?.length > 0 ? leavesQuery.data[leavesQuery.data.length - 1].total : 0}
           data={leavesQuery.data ? leavesQuery.data : []}
           categories={["Total number of leaves"]}
         />
         <TimeseriesAreaChart 
-          title="Total number of uniqueness proofs"
-          total={uniquenessQuery?.data ? uniquenessQuery.data[uniquenessQuery.data.length - 1].total : 0}
+          title="Total number of uniqueness proofs (Optimism goerli)"
+          total={uniquenessQuery?.data?.length > 0 ? uniquenessQuery.data[uniquenessQuery.data.length - 1].total : 0}
           data={uniquenessQuery.data ? uniquenessQuery.data : []}
           categories={["Total number of uniqueness proofs"]}
         />
         <TimeseriesAreaChart 
-          title="Total number of US residency proofs"
-          total={usResidencyQuery?.data ? usResidencyQuery.data[usResidencyQuery.data.length - 1].total : 0}
+          title="Total number of US residency proofs (Optimism goerli)"
+          total={usResidencyQuery?.data?.length > 0 ? usResidencyQuery.data[usResidencyQuery.data.length - 1].total : 0}
           data={usResidencyQuery.data ? usResidencyQuery.data : []}
           categories={["Total number of US residency proofs"]}
         />
