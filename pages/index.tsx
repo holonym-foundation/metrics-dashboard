@@ -42,9 +42,10 @@ export default function Home() {
   const leavesQuery = useQuery({
     queryKey: ['leavesTimeseries'],
     queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism-goerli`);
+      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism-goerli?only-total=true`);
       const data = await resp.json();
       if (data?.result) {
+        console.log(data.result)
         return data.result.map((item: SCEventWithTotal) => ({
           ...item,
           "Total number of leaves": item.total
@@ -55,7 +56,7 @@ export default function Home() {
   const uniquenessQuery = useQuery({
     queryKey: ['uniquenessTimeseries'],
     queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries/optimism-goerli`)
+      const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries/optimism-goerli?only-total=true`)
       const data = await resp.json();
       if (data?.result) {
         return data.result.map((item: SCEventWithTotal) => ({
@@ -68,7 +69,7 @@ export default function Home() {
   const usResidencyQuery = useQuery({
     queryKey: ['usResidencyTimeseries'],
     queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/us-residency-count/timeseries/optimism-goerli`)
+      const resp = await fetch(`${holonymApiUrl}/metrics/us-residency-count/timeseries/optimism-goerli?only-total=true`)
       const data = await resp.json();
       if (data?.result) {
         return data.result.map((item: SCEventWithTotal) => ({
