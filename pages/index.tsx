@@ -12,7 +12,7 @@ interface TimeseriesObject {
   timestamp: string
 }
 
-interface USResidencyTimeseriesObject extends TimeseriesObject {
+interface testnetUSResidencyTimeseriesObject extends TimeseriesObject {
   "Total number of US residency proofs": number | undefined,
 }
 
@@ -39,8 +39,48 @@ interface SCEventWithTotal extends SmartContractEvent {
 
 
 export default function Home() {
-  const leavesQuery = useQuery({
-    queryKey: ['leavesTimeseries'],
+  const optimismLeavesQuery = useQuery({
+    queryKey: ['optimismLeavesTimeseries'],
+    queryFn: async () => {
+      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism?only-total=true`);
+      const data = await resp.json();
+      if (data?.result) {
+        console.log(data.result)
+        return data.result.map((item: SCEventWithTotal) => ({
+          ...item,
+          "Total number of leaves": item.total
+        }))
+      }
+    }
+  })
+  const optimismUniquenessQuery = useQuery({
+    queryKey: ['optimismUniquenessTimeseries'],
+    queryFn: async () => {
+      const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries/optimism?only-total=true`)
+      const data = await resp.json();
+      if (data?.result) {
+        return data.result.map((item: SCEventWithTotal) => ({
+          ...item,
+          "Total number of uniqueness proofs": item.total
+        }))
+      }
+    }
+  })
+  const optimismUSResidencyQuery = useQuery({
+    queryKey: ['optimismUSResidencyTimeseries'],
+    queryFn: async () => {
+      const resp = await fetch(`${holonymApiUrl}/metrics/us-residency-count/timeseries/optimism?only-total=true`)
+      const data = await resp.json();
+      if (data?.result) {
+        return data.result.map((item: SCEventWithTotal) => ({
+          ...item,
+          "Total number of US residency proofs": item.total
+        }))
+      }
+    }
+  })
+  const testnetLeavesQuery = useQuery({
+    queryKey: ['testnetLeavesTimeseries'],
     queryFn: async () => {
       const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism-goerli?only-total=true`);
       const data = await resp.json();
@@ -53,8 +93,8 @@ export default function Home() {
       }
     }
   })
-  const uniquenessQuery = useQuery({
-    queryKey: ['uniquenessTimeseries'],
+  const testnetUniquenessQuery = useQuery({
+    queryKey: ['testnetUniquenessTimeseries'],
     queryFn: async () => {
       const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries/optimism-goerli?only-total=true`)
       const data = await resp.json();
@@ -66,8 +106,8 @@ export default function Home() {
       }
     }
   })
-  const usResidencyQuery = useQuery({
-    queryKey: ['usResidencyTimeseries'],
+  const testnetUSResidencyQuery = useQuery({
+    queryKey: ['testnetUSResidencyTimeseries'],
     queryFn: async () => {
       const resp = await fetch(`${holonymApiUrl}/metrics/us-residency-count/timeseries/optimism-goerli?only-total=true`)
       const data = await resp.json();
@@ -94,22 +134,50 @@ export default function Home() {
           Holonym metrics
         </h1>
 
+
+        <h2 style={{ color: 'white', fontSize: '20px' }} >
+          Mainnet
+        </h2>
+
+        <TimeseriesAreaChart 
+          title="Total number of leaves (Optimism)"
+          total={optimismLeavesQuery?.data?.length > 0 ? optimismLeavesQuery.data[optimismLeavesQuery.data.length - 1].total : 0}
+          data={optimismLeavesQuery.data ? optimismLeavesQuery.data : []}
+          categories={["Total number of leaves"]}
+        />
+        <TimeseriesAreaChart 
+          title="Total number of uniqueness proofs (Optimism)"
+          total={optimismUniquenessQuery?.data?.length > 0 ? optimismUniquenessQuery.data[optimismUniquenessQuery.data.length - 1].total : 0}
+          data={optimismUniquenessQuery.data ? optimismUniquenessQuery.data : []}
+          categories={["Total number of uniqueness proofs"]}
+        />
+        <TimeseriesAreaChart 
+          title="Total number of US residency proofs (Optimism)"
+          total={optimismUSResidencyQuery?.data?.length > 0 ? optimismUSResidencyQuery.data[optimismUSResidencyQuery.data.length - 1].total : 0}
+          data={optimismUSResidencyQuery.data ? optimismUSResidencyQuery.data : []}
+          categories={["Total number of US residency proofs"]}
+        />
+
+        <h2 style={{ color: 'white', fontSize: '20px' }} >
+          Testnet
+        </h2>
+
         <TimeseriesAreaChart 
           title="Total number of leaves (Optimism goerli)"
-          total={leavesQuery?.data?.length > 0 ? leavesQuery.data[leavesQuery.data.length - 1].total : 0}
-          data={leavesQuery.data ? leavesQuery.data : []}
+          total={testnetLeavesQuery?.data?.length > 0 ? testnetLeavesQuery.data[testnetLeavesQuery.data.length - 1].total : 0}
+          data={testnetLeavesQuery.data ? testnetLeavesQuery.data : []}
           categories={["Total number of leaves"]}
         />
         <TimeseriesAreaChart 
           title="Total number of uniqueness proofs (Optimism goerli)"
-          total={uniquenessQuery?.data?.length > 0 ? uniquenessQuery.data[uniquenessQuery.data.length - 1].total : 0}
-          data={uniquenessQuery.data ? uniquenessQuery.data : []}
+          total={testnetUniquenessQuery?.data?.length > 0 ? testnetUniquenessQuery.data[testnetUniquenessQuery.data.length - 1].total : 0}
+          data={testnetUniquenessQuery.data ? testnetUniquenessQuery.data : []}
           categories={["Total number of uniqueness proofs"]}
         />
         <TimeseriesAreaChart 
           title="Total number of US residency proofs (Optimism goerli)"
-          total={usResidencyQuery?.data?.length > 0 ? usResidencyQuery.data[usResidencyQuery.data.length - 1].total : 0}
-          data={usResidencyQuery.data ? usResidencyQuery.data : []}
+          total={testnetUSResidencyQuery?.data?.length > 0 ? testnetUSResidencyQuery.data[testnetUSResidencyQuery.data.length - 1].total : 0}
+          data={testnetUSResidencyQuery.data ? testnetUSResidencyQuery.data : []}
           categories={["Total number of US residency proofs"]}
         />
 
