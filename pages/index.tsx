@@ -158,7 +158,7 @@ export default function Home() {
           categories={["Total number of US residency proofs"]}
         />
 
-        <h2 style={{ color: 'white', fontSize: '20px' }} >
+        <h2 style={{ color: 'white', fontSize: '20px', marginTop: '25px' }}>
           Testnet
         </h2>
 
