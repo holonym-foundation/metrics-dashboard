@@ -39,6 +39,14 @@ interface SCEventWithTotal extends SmartContractEvent {
 
 
 export default function Home() {
+  const offChainLeavesQuery = useQuery({
+    queryKey: ['offChainLeaves'],
+    queryFn: async () => {
+      const resp = await fetch(`https://relayer.holonym.id/v2/getLeaves`);
+      const data = await resp.json();
+      return data.length;
+    }
+  })
   const optimismLeavesQuery = useQuery({
     queryKey: ['optimismLeavesTimeseries'],
     queryFn: async () => {
@@ -134,8 +142,18 @@ export default function Home() {
           Holonym metrics
         </h1>
 
+        <Card marginTop="mt-6" maxWidth="max-w-6xl">
+          <Text>Number of leaves in off-chain Merkle tree</Text>
+          {offChainLeavesQuery?.data ? (
+              <Metric>{offChainLeavesQuery.data}</Metric>
+          ) : (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <MoonLoader color="rgb(30 64 175)" />
+            </div>
+          )}
+        </Card>
 
-        <h2 style={{ color: 'white', fontSize: '20px' }} >
+        <h2 style={{ color: 'white', fontSize: '20px', marginTop: "20px" }}>
           Mainnet
         </h2>
 
