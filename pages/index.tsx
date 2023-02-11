@@ -47,20 +47,6 @@ export default function Home() {
       return data.length;
     }
   })
-  const optimismLeavesQuery = useQuery({
-    queryKey: ['optimismLeavesTimeseries'],
-    queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism?only-total=true`);
-      const data = await resp.json();
-      if (data?.result) {
-        console.log(data.result)
-        return data.result.map((item: SCEventWithTotal) => ({
-          ...item,
-          "Total number of leaves": item.total
-        }))
-      }
-    }
-  })
   const optimismUniquenessQuery = useQuery({
     queryKey: ['optimismUniquenessTimeseries'],
     queryFn: async () => {
@@ -83,20 +69,6 @@ export default function Home() {
         return data.result.map((item: SCEventWithTotal) => ({
           ...item,
           "Total number of US residency proofs": item.total
-        }))
-      }
-    }
-  })
-  const testnetLeavesQuery = useQuery({
-    queryKey: ['testnetLeavesTimeseries'],
-    queryFn: async () => {
-      const resp = await fetch(`${holonymApiUrl}/metrics/leaves/timeseries/optimism-goerli?only-total=true`);
-      const data = await resp.json();
-      if (data?.result) {
-        console.log(data.result)
-        return data.result.map((item: SCEventWithTotal) => ({
-          ...item,
-          "Total number of leaves": item.total
         }))
       }
     }
@@ -158,12 +130,6 @@ export default function Home() {
         </h2>
 
         <TimeseriesAreaChart 
-          title="Total number of leaves (Optimism)"
-          total={optimismLeavesQuery?.data?.length > 0 ? optimismLeavesQuery.data[optimismLeavesQuery.data.length - 1].total : 0}
-          data={optimismLeavesQuery.data ? optimismLeavesQuery.data : []}
-          categories={["Total number of leaves"]}
-        />
-        <TimeseriesAreaChart 
           title="Total number of uniqueness proofs (Optimism)"
           total={optimismUniquenessQuery?.data?.length > 0 ? optimismUniquenessQuery.data[optimismUniquenessQuery.data.length - 1].total : 0}
           data={optimismUniquenessQuery.data ? optimismUniquenessQuery.data : []}
@@ -180,12 +146,6 @@ export default function Home() {
           Testnet
         </h2>
 
-        <TimeseriesAreaChart 
-          title="Total number of leaves (Optimism goerli)"
-          total={testnetLeavesQuery?.data?.length > 0 ? testnetLeavesQuery.data[testnetLeavesQuery.data.length - 1].total : 0}
-          data={testnetLeavesQuery.data ? testnetLeavesQuery.data : []}
-          categories={["Total number of leaves"]}
-        />
         <TimeseriesAreaChart 
           title="Total number of uniqueness proofs (Optimism goerli)"
           total={testnetUniquenessQuery?.data?.length > 0 ? testnetUniquenessQuery.data[testnetUniquenessQuery.data.length - 1].total : 0}
