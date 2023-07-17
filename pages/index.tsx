@@ -47,15 +47,28 @@ export default function Home() {
       return data.length;
     }
   })
-  const optimismUniquenessQuery = useQuery({
-    queryKey: ['optimismUniquenessTimeseries'],
+  const optimismUniquenessGovIdQuery = useQuery({
+    queryKey: ['optimismUniquenessGovIdTimeseries'],
     queryFn: async () => {
       const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/timeseries/optimism?only-total=true`)
       const data = await resp.json();
       if (data?.result) {
         return data.result.map((item: SCEventWithTotal) => ({
           ...item,
-          "Total number of uniqueness proofs": item.total
+          "Total number of uniqueness proofs (government ID)": item.total
+        }))
+      }
+    }
+  })
+  const optimismUniquenessPhoneQuery = useQuery({
+    queryKey: ['optimismUniquenessPhoneTimeseries'],
+    queryFn: async () => {
+      const resp = await fetch(`${holonymApiUrl}/metrics/sybil-resistance-count/phone/timeseries/optimism?only-total=true`)
+      const data = await resp.json();
+      if (data?.result) {
+        return data.result.map((item: SCEventWithTotal) => ({
+          ...item,
+          "Total number of uniqueness proofs (phone)": item.total
         }))
       }
     }
@@ -130,10 +143,16 @@ export default function Home() {
         </h2>
 
         <TimeseriesAreaChart 
-          title="Total number of uniqueness proofs (Optimism)"
-          total={optimismUniquenessQuery?.data?.length > 0 ? optimismUniquenessQuery.data[optimismUniquenessQuery.data.length - 1].total : 0}
-          data={optimismUniquenessQuery.data ? optimismUniquenessQuery.data : []}
-          categories={["Total number of uniqueness proofs"]}
+          title="Total number of (government ID) uniqueness proofs (Optimism)"
+          total={optimismUniquenessGovIdQuery?.data?.length > 0 ? optimismUniquenessGovIdQuery.data[optimismUniquenessGovIdQuery.data.length - 1].total : 0}
+          data={optimismUniquenessGovIdQuery.data ? optimismUniquenessGovIdQuery.data : []}
+          categories={["Total number of uniqueness proofs (government ID)"]}
+        />
+        <TimeseriesAreaChart 
+          title="Total number of (phone) uniqueness proofs (Optimism)"
+          total={optimismUniquenessPhoneQuery?.data?.length > 0 ? optimismUniquenessPhoneQuery.data[optimismUniquenessPhoneQuery.data.length - 1].total : 0}
+          data={optimismUniquenessPhoneQuery.data ? optimismUniquenessPhoneQuery.data : []}
+          categories={["Total number of uniqueness proofs (phone)"]}
         />
         <TimeseriesAreaChart 
           title="Total number of US residency proofs (Optimism)"
