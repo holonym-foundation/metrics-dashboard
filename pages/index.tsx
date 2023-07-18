@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css';
 import { Card, Text, Metric, AreaChart, ColGrid, Title } from "@tremor/react";
 import { holonymApiUrl } from '../constants/misc';
 import TimeseriesAreaChart from '../components/TimeseriesAreaChart'
+import Navbar from '../components/Navbar';
 
 interface TimeseriesObject {
   // timestamp: number
@@ -114,72 +115,76 @@ export default function Home() {
   })
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Holonym Metrics</title>
-        <meta name="description" content="Holonym usage metrics" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div>
+      <Navbar />
 
-      <main className={styles.main}>
-  
-        <h1 style={{ color: 'white', fontSize: '24px' }} >
-          Holonym metrics
-        </h1>
+      <div className={styles.container}>
+        <Head>
+          <title>Holonym Metrics</title>
+          <meta name="description" content="Holonym usage metrics" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-        <Card marginTop="mt-6" maxWidth="max-w-6xl">
-          <Text>Number of leaves in off-chain Merkle tree</Text>
-          {offChainLeavesQuery?.data ? (
-              <Metric>{offChainLeavesQuery.data}</Metric>
-          ) : (
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <MoonLoader color="rgb(30 64 175)" />
-            </div>
-          )}
-        </Card>
+        <main className={styles.main}>
+    
+          <h1 style={{ color: 'white', fontSize: '24px' }} >
+            Holonym metrics
+          </h1>
 
-        <h2 style={{ color: 'white', fontSize: '20px', marginTop: "20px" }}>
-          Mainnet
-        </h2>
+          <Card marginTop="mt-6" maxWidth="max-w-6xl">
+            <Text>Number of leaves in off-chain Merkle tree</Text>
+            {offChainLeavesQuery?.data ? (
+                <Metric>{offChainLeavesQuery.data}</Metric>
+            ) : (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <MoonLoader color="rgb(30 64 175)" />
+              </div>
+            )}
+          </Card>
 
-        <TimeseriesAreaChart 
-          title="Total number of (government ID) uniqueness proofs (Optimism)"
-          total={optimismUniquenessGovIdQuery?.data?.length > 0 ? optimismUniquenessGovIdQuery.data[optimismUniquenessGovIdQuery.data.length - 1].total : 0}
-          data={optimismUniquenessGovIdQuery.data ? optimismUniquenessGovIdQuery.data : []}
-          categories={["Total number of uniqueness proofs (government ID)"]}
-        />
-        <TimeseriesAreaChart 
-          title="Total number of (phone) uniqueness proofs (Optimism)"
-          total={optimismUniquenessPhoneQuery?.data?.length > 0 ? optimismUniquenessPhoneQuery.data[optimismUniquenessPhoneQuery.data.length - 1].total : 0}
-          data={optimismUniquenessPhoneQuery.data ? optimismUniquenessPhoneQuery.data : []}
-          categories={["Total number of uniqueness proofs (phone)"]}
-        />
-        <TimeseriesAreaChart 
-          title="Total number of US residency proofs (Optimism)"
-          total={optimismUSResidencyQuery?.data?.length > 0 ? optimismUSResidencyQuery.data[optimismUSResidencyQuery.data.length - 1].total : 0}
-          data={optimismUSResidencyQuery.data ? optimismUSResidencyQuery.data : []}
-          categories={["Total number of US residency proofs"]}
-        />
+          <h2 style={{ color: 'white', fontSize: '20px', marginTop: "20px" }}>
+            Mainnet
+          </h2>
 
-        <h2 style={{ color: 'white', fontSize: '20px', marginTop: '25px' }}>
-          Testnet
-        </h2>
+          <TimeseriesAreaChart 
+            title="Total number of (government ID) uniqueness proofs (Optimism)"
+            total={optimismUniquenessGovIdQuery?.data?.length > 0 ? optimismUniquenessGovIdQuery.data[optimismUniquenessGovIdQuery.data.length - 1].total : 0}
+            data={optimismUniquenessGovIdQuery.data ? optimismUniquenessGovIdQuery.data : []}
+            categories={["Total number of uniqueness proofs (government ID)"]}
+          />
+          <TimeseriesAreaChart 
+            title="Total number of (phone) uniqueness proofs (Optimism)"
+            total={optimismUniquenessPhoneQuery?.data?.length > 0 ? optimismUniquenessPhoneQuery.data[optimismUniquenessPhoneQuery.data.length - 1].total : 0}
+            data={optimismUniquenessPhoneQuery.data ? optimismUniquenessPhoneQuery.data : []}
+            categories={["Total number of uniqueness proofs (phone)"]}
+          />
+          <TimeseriesAreaChart 
+            title="Total number of US residency proofs (Optimism)"
+            total={optimismUSResidencyQuery?.data?.length > 0 ? optimismUSResidencyQuery.data[optimismUSResidencyQuery.data.length - 1].total : 0}
+            data={optimismUSResidencyQuery.data ? optimismUSResidencyQuery.data : []}
+            categories={["Total number of US residency proofs"]}
+          />
 
-        <TimeseriesAreaChart 
-          title="Total number of uniqueness proofs (Optimism goerli)"
-          total={testnetUniquenessQuery?.data?.length > 0 ? testnetUniquenessQuery.data[testnetUniquenessQuery.data.length - 1].total : 0}
-          data={testnetUniquenessQuery.data ? testnetUniquenessQuery.data : []}
-          categories={["Total number of uniqueness proofs"]}
-        />
-        <TimeseriesAreaChart 
-          title="Total number of US residency proofs (Optimism goerli)"
-          total={testnetUSResidencyQuery?.data?.length > 0 ? testnetUSResidencyQuery.data[testnetUSResidencyQuery.data.length - 1].total : 0}
-          data={testnetUSResidencyQuery.data ? testnetUSResidencyQuery.data : []}
-          categories={["Total number of US residency proofs"]}
-        />
+          <h2 style={{ color: 'white', fontSize: '20px', marginTop: '25px' }}>
+            Testnet
+          </h2>
 
-      </main>
+          <TimeseriesAreaChart 
+            title="Total number of uniqueness proofs (Optimism goerli)"
+            total={testnetUniquenessQuery?.data?.length > 0 ? testnetUniquenessQuery.data[testnetUniquenessQuery.data.length - 1].total : 0}
+            data={testnetUniquenessQuery.data ? testnetUniquenessQuery.data : []}
+            categories={["Total number of uniqueness proofs"]}
+          />
+          <TimeseriesAreaChart 
+            title="Total number of US residency proofs (Optimism goerli)"
+            total={testnetUSResidencyQuery?.data?.length > 0 ? testnetUSResidencyQuery.data[testnetUSResidencyQuery.data.length - 1].total : 0}
+            data={testnetUSResidencyQuery.data ? testnetUSResidencyQuery.data : []}
+            categories={["Total number of US residency proofs"]}
+          />
 
+        </main>
+
+      </div>
     </div>
   )
 }

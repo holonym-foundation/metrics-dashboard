@@ -30,3 +30,29 @@ a {
     background: black;
   }
 }
+
+/* Navbar */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.navMenu {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.navMenu a {
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  width: 80px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.navMenu a:hover {
+  color: rgb(59, 130, 246, 1);
+}
