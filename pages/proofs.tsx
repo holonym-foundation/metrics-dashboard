@@ -38,7 +38,7 @@ interface SCEventWithTotal extends SmartContractEvent {
 }
 
 
-export default function Home() {
+export default function Proofs() {
   const offChainLeavesQuery = useQuery({
     queryKey: ['offChainLeaves'],
     queryFn: async () => {
