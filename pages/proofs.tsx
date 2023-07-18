@@ -6,7 +6,6 @@ import styles from '../styles/Home.module.css';
 import { Card, Text, Metric, AreaChart, ColGrid, Title } from "@tremor/react";
 import { holonymApiUrl } from '../constants/misc';
 import TimeseriesAreaChart from '../components/TimeseriesAreaChart'
-import Navbar from '../components/Navbar';
 
 interface TimeseriesObject {
   // timestamp: number
@@ -116,20 +115,9 @@ export default function Home() {
 
   return (
     <div>
-      <Navbar />
-
       <div className={styles.container}>
-        <Head>
-          <title>Holonym Metrics</title>
-          <meta name="description" content="Holonym usage metrics" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
 
         <main className={styles.main}>
-    
-          <h1 style={{ color: 'white', fontSize: '24px' }} >
-            Holonym metrics
-          </h1>
 
           <Card marginTop="mt-6" maxWidth="max-w-6xl">
             <Text>Number of leaves in off-chain Merkle tree</Text>

@@ -47,7 +47,6 @@ a {
 .navMenu a {
   color: #fff;
   text-decoration: none;
-  text-transform: uppercase;
   display: inline-block;
   width: 80px;
   -webkit-transition: all 0.2s ease-in-out;
